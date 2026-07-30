@@ -6,7 +6,7 @@
 ---
 <a name="english" id="english"></a>
 
-# Robotic Hand - C Prototype Project
+# Robotic Hand - Prototype Project
 
 **Federal University of Uberlândia - UFU**
 
@@ -15,7 +15,7 @@
 ---
 ## About the Project
 
-This project consists of the development and control of a **robotic hand** driven by servo motors, using the **C** programming language. The goal is to simulate human finger movements through commands programmed or sent via serial interface.
+This project consists of the development and control of a **robotic hand** driven by servo motors. The goal is to simulate human finger movements through commands programmed or sent via serial interface.
 
 ---
 
@@ -26,6 +26,7 @@ This project consists of the development and control of a **robotic hand** drive
 * **Camila Franco Borges** - ID: `12521EBI026`
 * **Larissa Araújo Lima** - ID: `12511EBI008`
 * **Vinícius Santos Nímia** - ID: `12521EBI022`
+
 ---
 
 ## 🛠️ Components Used
@@ -63,42 +64,25 @@ Below are images of the 3D printed robotic hand (based on the *InMoov* open-sour
 
 ## ⚙️ System Architecture and Operation
 
-The robotic hand control uses a **Master-Slave (Transmitter/Receiver)** architecture with wireless communication via the **MQTT protocol** over a Wi-Fi network. The system consists of two **ESP32** microcontrollers working synchronously:
+The robotic hand control uses a **Master-Slave (Transmitter/Receiver)** architecture with wireless communication via the **MQTT protocol** over a Wi-Fi network. The system is composed of two **ESP32** microcontrollers working synchronously:
 
 1. **ESP32 #1 (Transmitter / Remote Control):** Reads physical user inputs through pushbuttons and sends commands via Wi-Fi to the MQTT broker.
 2. **ESP32 #2 (Receiver / Hand Actuator):** Subscribes to the MQTT broker topic, receives commands in real time, and drives the stepper motor using the A4988 driver.
 
 ---
 
-## 💻 C/C++ Code Explanation (`.ino`)
+## 🔄 Step-by-Step Operation Flow
 
-### 📤 1. Transmitter Code (`first.ino`) — ESP32 #1
-This code handles the user input interface.
-
-* **Wi-Fi and MQTT Connection:** Connects to the configured Wi-Fi network and establishes a link with the public broker `broker.hivemq.com`.
-* **Button Reading:** Uses pins `GPIO 4` and `GPIO 5` with internal pull-up resistors (`INPUT_PULLUP`) to detect button presses.
-* **Message Publishing:**
-  * **Press Close:** Publishes the string `"FECHAR"` to the topic `projeto/mao/comando`.
-  * **Press Open:** Publishes the string `"ABRIR"` to the topic `projeto/mao/comando`.
-  * **No button pressed:** Publishes the string `"PARAR"` to stop any movement.
-
-```cpp
-// Main loop snippet for reading buttons and sending commands
-bool estadoAbrir  = (digitalRead(btnAbrir) == LOW);
-bool estadoFechar = (digitalRead(btnFechar) == LOW);
-
-if (estadoFechar && !estadoAbrir) {
-    client.publish("projeto/mao/comando", "FECHAR");
-} else if (estadoAbrir && !estadoFechar) {
-    client.publish("projeto/mao/comando", "ABRIR");
-} else {
-    client.publish("projeto/mao/comando", "PARAR");
-}
+1. **Initialization:** Both ESP32s initialize serial communication, connect to the local Wi-Fi network, and establish a link with the MQTT broker.
+2. **Input:** The user presses the **Close** button on ESP32 #1.
+3. **Transmission:** ESP32 #1 sends the text `"FECHAR"` to the cloud via MQTT.
+4. **Reception:** ESP32 #2 receives the packet in milliseconds via Wi‑Fi.
+5. **Action:** ESP32 #2 changes the direction signal and starts sending step pulses, pulling the hand's cables/tendons until the button is released.
 
 ---
 <a name="portugues" id="portugues"></a>
 
-# Mão Robótica  - Projeto de Protótipo em C
+# Mão Robótica - Projeto de Protótipo
 
 **Universidade Federal de Uberlândia - UFU**
 
@@ -118,6 +102,7 @@ Este projeto consiste no desenvolvimento e controle de uma **mão robótica** ac
 * **Camila Franco Borges** - Matrícula: `12521EBI026`
 * **Larissa Araújo Lima** - Matrícula: `12511EBI008`
 * **Vinícius Santos Nímia** - Matrícula: `12521EBI022`
+
 ---
 
 ## 🛠️ Componentes Utilizados
@@ -150,72 +135,22 @@ Abaixo estão as imagens da mão robótica impressa em 3D (baseada no projeto op
 2. **Estrutura Impressa em 3D:**
    * **Material:** Peças em PLA/ABS divididas em falanges distal, média e proximal, conectadas por pinos ou encaixes flexíveis.
    * **Roteamento de Cabos:** Os furos na palma e no dorso da mão atuam como guias (passa-cabos) para reduzir o atrito e manter o alinhamento dos cabos de aço/nylon durante o movimento.
+
 ---
 
 ## ⚙️ Arquitetura e Funcionamento do Sistema
 
-[cite_start]O controle da mão robótica utiliza uma arquitetura **Mestre-Escravo (Transmissor/Receptor)** com comunicação sem fio via **protocolo MQTT** através de uma rede Wi-Fi[cite: 1, 24]. [cite_start]O sistema é composto por dois microcontroladores **ESP32** atuando de forma síncrona[cite: 10, 26]:
+O controle da mão robótica utiliza uma arquitetura **Mestre-Escravo (Transmissor/Receptor)** com comunicação sem fio via **protocolo MQTT** através de uma rede Wi-Fi. O sistema é composto por dois microcontroladores **ESP32** atuando de forma síncrona:
 
-1. [cite_start]**ESP32 #1 (Transmissor / Controle Remoto):** Lê os comandos físicos através de botões e envia mensagens via Wi-Fi para o broker MQTT[cite: 25, 29, 32].
-2. [cite_start]**ESP32 #2 (Receptor / Atuador da Mão):** Se inscreve no tópico do broker MQTT, recebe os comandos em tempo real e acciona o motor de passo através do driver A4988[cite: 4, 7, 11].
-
----
-
-## 💻 Explicação dos Códigos C/C++ (`.ino`)
-
-### 📤 1. Código Transmissor (`first.ino`) — ESP32 #1
-Este código é responsável pela interface de entrada do usuário.
-
-* [cite_start]**Conexão Wi-Fi e MQTT:** Conecta-se à rede Wi-Fi configurada e se vincula ao broker público `broker.hivemq.com`[cite: 1, 24, 29].
-* [cite_start]**Leitura dos Botões:** Utiliza os pinos `GPIO 4` e `GPIO 5` com resistor de pull-up interno (`INPUT_PULLUP`) para detectar o acionamento dos botões[cite: 25, 28].
-* **Envio de Mensagens:**
-  * [cite_start]**Pressionar Fechar:** Publica a string `"FECHAR"` no tópico `projeto/mao/comando`[cite: 32].
-  * [cite_start]**Pressionar Abrir:** Publica a string `"ABRIR"` no tópico `projeto/mao/comando`[cite: 33, 34].
-  * [cite_start]**Nenhum botão pressionado:** Publica a string `"PARAR"` para cessar qualquer movimento[cite: 34].
-
-```cpp
-// Trecho principal da leitura e envio no loop
-bool estadoAbrir  = (digitalRead(btnAbrir) == LOW);
-bool estadoFechar = (digitalRead(btnFechar) == LOW);
-
-if (estadoFechar && !estadoAbrir) {
-    client.publish("projeto/mao/comando", "FECHAR");
-} else if (estadoAbrir && !estadoFechar) {
-    client.publish("projeto/mao/comando", "ABRIR");
-} else {
-    client.publish("projeto/mao/comando", "PARAR");
-}
-```
-
----
-
-### 📥 2. Código Receptor (`second.ino`) — ESP32 #2
-Este código é responsável pela recepção dos comandos e acionamento do motor de passo.
-
-* [cite_start]**Assinatura de Tópico (Subscribe):** Assim que se conecta ao broker MQTT, se inscreve no tópico `projeto/mao/comando` para receber as mensagens enviadas pelo ESP32 #1[cite: 11].
-* [cite_start]**Função Callback:** Sempre que uma nova mensagem chega via MQTT, a função `callback()` extrai a string (`"ABRIR"`, `"FECHAR"` ou `"PARAR"`) e atualiza a variável `comandoAtual`[cite: 7, 9].
-* [cite_start]**Mecanismo de Segurança (Timeout):** Se o ESP32 #2 não receber mensagens por mais de 300 milissegundos, o estado é forçado para `"PARAR"` para evitar acionamentos contínuos acidentais[cite: 17, 18].
-* **Controle do Driver A4988 (Motor de Passo):**
-  * [cite_start]**Pino `DIR` (`GPIO 19`):** Define o sentido da rotação do motor (`HIGH` para abrir, `LOW` para fechar)[cite: 4, 18, 20].
-  * **Pino `STEP` (`GPIO 18`):** Envia pulsos de onda quadrada para dar os passos do motor. [cite_start]A frequência do pulso é determinada pela variável `velocidade` (2500 µs)[cite: 4, 5, 19, 21].
-
-```cpp
-// Trecho de acionamento do motor de passo via Driver A4988
-if (comandoAtual == "FECHAR") {
-    digitalWrite(pinDir, LOW);   // Define a direção (Fechar)
-    digitalWrite(pinStep, HIGH); // Início do pulso
-    delayMicroseconds(2500);
-    digitalWrite(pinStep, LOW);  // Fim do pulso
-    delayMicroseconds(2500);
-}
-```
+1. **ESP32 #1 (Transmissor / Controle Remoto):** Lê os comandos físicos através de botões e envia mensagens via Wi-Fi para o broker MQTT.
+2. **ESP32 #2 (Receptor / Atuador da Mão):** Se inscreve no tópico do broker MQTT, recebe os comandos em tempo real e acciona o motor de passo através do driver A4988.
 
 ---
 
 ## 🔄 Fluxo de Funcionamento Passo a Passo
 
-1. [cite_start]**Inicialização:** Ambos os ESP32 inicializam a comunicação Serial, conectam-se ao Wi-Fi local e estabelecem vínculo com o broker MQTT[cite: 1, 9, 11, 15, 24, 28, 29].
-2. [cite_start]**Entrada:** O usuário pressiona o botão de **Fechar** no ESP32 #1[cite: 25, 31, 32].
-3. [cite_start]**Transmissão:** O ESP32 #1 envia o texto `"FECHAR"` para a nuvem via MQTT[cite: 32].
-4. [cite_start]**Recepção:** O ESP32 #2 recebe o pacote em milissegundos via Wi-Fi[cite: 7, 8].
-5. [cite_start]**Ação:** O ESP32 #2 altera o sinal do pino `DIR` e começa a enviar pulsos no pino `STEP`, tracionando os cabos/tendões da mão até que o botão seja solto[cite: 18, 19, 20].
+1. **Inicialização:** Ambos os ESP32 inicializam a comunicação Serial, conectam-se ao Wi-Fi local e estabelecem vínculo com o broker MQTT.
+2. **Entrada:** O usuário pressiona o botão de **Fechar** no ESP32 #1.
+3. **Transmissão:** O ESP32 #1 envia o texto `"FECHAR"` para a nuvem via MQTT.
+4. **Recepção:** O ESP32 #2 recebe o pacote em milissegundos via Wi-Fi.
+5. **Ação:** O ESP32 #2 altera o sinal de direção e começa a enviar pulsos de passo, tracionando os cabos/tendões da mão até que o botão seja solto.
