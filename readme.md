@@ -46,7 +46,7 @@ Below are images of the 3D printed robotic hand (based on the *InMoov* open-sour
 
 | Palmar View (Front) | Dorsal View (Back) |
 | :---: | :---: |
-| ![Robotic Hand - Front](img/mao_frente.jpeg) | ![Robotic Hand - Back](img/mao_costas.jpeg) |
+| ![Robotic Hand - Front](mao_frente.jpeg) | ![Robotic Hand - Back](mao_costas.jpeg) |
 
 ### 🔍 Mechanical Explanation
 
@@ -138,7 +138,7 @@ Abaixo estão as imagens da mão robótica impressa em 3D (baseada no projeto op
 
 | Visão Palmar (Frente) | Visão Dorsal (Costas) |
 | :---: | :---: |
-| ![Mão Robótica - Frente](img/mao_frente.jpeg) | ![Mão Robótica - Costas](img/mao_costas.jpeg) |
+| ![Mão Robótica - Frente](mao_frente.jpeg) | ![Mão Robótica - Costas](mao_costas.jpeg) |
 
 ### 🔍 Explicação Mecânica
 
