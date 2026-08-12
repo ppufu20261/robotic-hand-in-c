@@ -33,7 +33,7 @@ This project consists of the development and control of a **robotic hand** drive
 
 | Component | Quantity | Description |
 | :--- | :---: | :--- |
-| **Microcontroller** | 1 | ESP32-Wrover |
+| **Microcontroller** | 2 | 1 ESP32-Wrover and 1 ESP32 |
 | **Servo Motors** | 1 | *TAL* servos for finger control |
 | **Power Supply** | 1 | 5V external power supply |
 | **3D Structure** | 1 | PLA/ABS printed hand |
@@ -109,7 +109,7 @@ Este projeto consiste no desenvolvimento e controle de uma **mão robótica** ac
 
 | Componente | Quantidade | Descrição |
 | :--- | :---: | :--- |
-| **Microcontrolador** | 1 | ESP32-Wrover |
+| **Microcontrolador** | 2 | 1 ESP32-Wrover and 1 ESP32 |
 | **Servomotores** | 1 | Servos *TAL* para controle dos dedos |
 | **Fonte de Alimentação** | 1 | Fonte externa de 5V |
 | **Estrutura 3D** | 1 | Mão impressa em PLA/ABS |
